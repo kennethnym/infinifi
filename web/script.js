@@ -5,7 +5,8 @@ let currentAudio;
 let volume = 1;
 
 function playAudio() {
-	currentAudio = new Audio("/current.mp3");
+	// add a random query parameter at the end to prevent browser caching
+	currentAudio = new Audio(`/current.mp3?t=${Date.now()}`);
 	currentAudio.onplay = () => {
 		isPlaying = true;
 		playBtn.innerText = "pause";
