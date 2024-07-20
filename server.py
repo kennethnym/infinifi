@@ -1,16 +1,27 @@
 import threading
 
 # from generate import generate
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-app = FastAPI()
+# the index of the current audio track from 0 to 9
 current_index = -1
+# the timer that periodically advances the current audio track
+t = None
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    advance()
+    yield
+    if t:
+        t.cancel()
 
 
 def advance():
-    global current_index
+    global current_index, t
 
     # if current_index == 0:
     #   generate(offset=5)
@@ -28,7 +39,7 @@ def advance():
     t.start()
 
 
-advance()
+app = FastAPI(lifespan=lifespan)
 
 
 @app.get("/current.mp3")
