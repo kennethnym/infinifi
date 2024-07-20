@@ -34,7 +34,7 @@ function pauseAudio() {
 }
 
 function fadeIn() {
-	// volume ranges from 0 to 1, this determines by how much the volume number
+	// volume ranges from 0 to 100, this determines by how much the volume number
 	// should be incremented at every step of the fade in
 	const volumeStep = 100 / (CROSSFADE_DURATION_MS / CROSSFADE_INTERVAL_MS);
 	const handle = setInterval(() => {
@@ -48,7 +48,7 @@ function fadeIn() {
 }
 
 function fadeOut() {
-	// volume ranges from 0 to 1, this determines by how much the volume number
+	// volume ranges from 0 to 100, this determines by how much the volume number
 	// should be decremented at every step of the fade out
 	const volumeStep = 100 / (CROSSFADE_DURATION_MS / CROSSFADE_INTERVAL_MS);
 	const handle = setInterval(() => {
