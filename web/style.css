@@ -55,10 +55,21 @@ h6 {
 }
 
 .container {
-  width: 50%;
   display: flex;
   flex-direction: column;
   align-items: start;
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 80%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    width: 50%;
+  }
 }
 
 .button-container {
@@ -106,7 +117,7 @@ h6 {
 .button:active {
   background: var(--text) !important;
   color: var(--base);
-  transform: translate(2px, 2px);
+  transform: translate(4px, 4px);
 }
 
 .button:active::after {
