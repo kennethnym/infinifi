@@ -1,4 +1,5 @@
 const playBtn = document.getElementById("play-btn");
+const catImg = document.getElementsByClassName("cat")[0];
 
 const CROSSFADE_DURATION_MS = 5000;
 const CROSSFADE_INTERVAL_MS = 20;
@@ -68,6 +69,18 @@ function fadeOut() {
 	}, CROSSFADE_INTERVAL_MS);
 }
 
+function animateCat() {
+	let current = 0;
+	setInterval(() => {
+		if (current === 3) {
+			current = 0;
+		} else {
+			current += 1;
+		}
+		catImg.src = `/images/cat-${current}.png`;
+	}, 500);
+}
+
 playBtn.onclick = () => {
 	if (isPlaying) {
 		pauseAudio();
@@ -75,3 +88,5 @@ playBtn.onclick = () => {
 		playAudio();
 	}
 };
+
+animateCat();

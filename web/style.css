@@ -47,7 +47,12 @@ main {
   display: flex;
   flex-direction: column;
   align-items: start;
-  margin: 4rem;
+  margin: 2rem;
+}
+@media (min-width: 1024px) {
+  main {
+    margin: 4rem;
+  }
 }
 
 .container {
@@ -69,9 +74,14 @@ main {
 .cat {
   position: absolute;
   bottom: 0px;
-  right: 10%;
+  right: 2rem;
   image-rendering: pixelated;
   height: 30px;
+}
+@media (min-width: 1024px) {
+  .cat {
+    right: 4rem;
+  }
 }
 
 .eeping-cat {
