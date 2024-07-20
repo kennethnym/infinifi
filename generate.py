@@ -1,12 +1,12 @@
 import torchaudio
-from audiocraft.models.magnet import MAGNeT
+from audiocraft.models.musicgen import MusicGen
 from audiocraft.data.audio import audio_write
 
-MODEL_NAME = "facebook/magnet-medium-30secs"
+MODEL_NAME = "facebook/musicgen-large"
 
 print(f"getting {MODEL_NAME}...")
 
-model = MAGNeT.get_pretrained(MODEL_NAME)
+model = MusicGen.get_pretrained(MODEL_NAME)
 descriptions = ["gentle lo-fi beats"]
 
 print("model obtained. generating wav files...")
