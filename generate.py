@@ -2,7 +2,7 @@ import torchaudio
 from audiocraft.models.magnet import MAGNeT
 from audiocraft.data.audio import audio_write
 
-MODEL_NAME = "facebook/magnet-small-10secs"
+MODEL_NAME = "facebook/magnet-medium-30secs"
 
 print(f"getting {MODEL_NAME}...")
 
