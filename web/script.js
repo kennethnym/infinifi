@@ -17,9 +17,14 @@ function playAudio() {
 	};
 	currentAudio.onpause = () => {
 		isPlaying = false;
+		volume = 0;
 		playBtn.innerText = "play";
 	};
-	currentAudio.volume = volume;
+	currentAudio.onended = () => {
+		volume = 0;
+		playAudio();
+	};
+	currentAudio.volume = 0;
 
 	currentAudio.play();
 
@@ -31,6 +36,8 @@ function playAudio() {
 
 function pauseAudio() {
 	currentAudio.pause();
+	currentAudio.volume = 0;
+	volume = 0;
 }
 
 function fadeIn() {
