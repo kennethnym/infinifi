@@ -1,4 +1,5 @@
-const DOT_COLOR = "#dce0e8";
+const DOT_COLOR_LIGHT_MODE = "#dce0e8";
+const DOT_COLOR_DARK_MODE = "#45475a";
 const DOT_RADIUS = 1 * devicePixelRatio;
 
 const canvas = document.getElementById("bg");
@@ -6,6 +7,7 @@ const ctx = canvas.getContext("2d");
 
 let mouseX = 0;
 let mouseY = 0;
+let dotColor = "#dce0e8";
 
 function resizeCanvas(width, height) {
 	const devicePixelRatio = window.devicePixelRatio || 1;
@@ -29,7 +31,7 @@ function drawDot(x, y) {
 			((effectRadius - Math.min(distance, effectRadius)) / effectRadius);
 	ctx.beginPath();
 	ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
-	ctx.fillStyle = DOT_COLOR;
+	ctx.fillStyle = dotColor;
 	ctx.fill();
 }
 
@@ -52,6 +54,16 @@ window.addEventListener("mousemove", (event) => {
 	mouseY = event.clientY * devicePixelRatio;
 	drawPattern();
 });
+
+if (window.matchMedia) {
+	const query = window.matchMedia("(prefers-color-scheme: dark)");
+	dotColor = query.matches ? DOT_COLOR_DARK_MODE : DOT_COLOR_LIGHT_MODE;
+
+	query.addEventListener("change", (event) => {
+		dotColor = event.matches ? DOT_COLOR_DARK_MODE : DOT_COLOR_LIGHT_MODE;
+		drawPattern();
+	});
+}
 
 resizeCanvas(window.innerWidth, window.innerHeight);
 drawPattern();
