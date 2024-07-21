@@ -23,7 +23,7 @@ prompts = [
 ]
 
 
-# model = modal.Cls.lookup("infinifi", "Model")
+model = modal.Cls.lookup("infinifi", "Model")
 
 
 @asynccontextmanager
@@ -75,7 +75,7 @@ def advance():
     else:
         current_index = current_index + 1
 
-    # threading.Thread(target=generate_new_audio).start()
+    threading.Thread(target=generate_new_audio).start()
 
     t = threading.Timer(60, advance)
     t.start()
