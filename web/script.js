@@ -1,5 +1,7 @@
 const playBtn = document.getElementById("play-btn");
 const catImg = document.getElementsByClassName("cat")[0];
+const volumeSlider = document.getElementById("volume-slider");
+const currentVolumeLabel = document.getElementById("current-volume-label");
 const clickAudio = new Audio("/audio/click.wav");
 const clickReleaseAudio = new Audio("/audio/click-release.wav");
 
@@ -8,8 +10,10 @@ const CROSSFADE_INTERVAL_MS = 20;
 const AUDIO_DURATION_MS = 60000;
 
 let isPlaying = false;
+let isFading = false;
 let currentAudio;
-let volume = 0;
+let maxVolume = 100;
+let currentVolume = 0;
 
 function playAudio() {
 	// add a random query parameter at the end to prevent browser caching
@@ -20,11 +24,11 @@ function playAudio() {
 	};
 	currentAudio.onpause = () => {
 		isPlaying = false;
-		volume = 0;
+		currentVolume = 0;
 		playBtn.innerText = "play";
 	};
 	currentAudio.onended = () => {
-		volume = 0;
+		currentVolume = 0;
 		playAudio();
 	};
 	currentAudio.volume = 0;
@@ -40,33 +44,43 @@ function playAudio() {
 function pauseAudio() {
 	currentAudio.pause();
 	currentAudio.volume = 0;
-	volume = 0;
+	currentVolume = 0;
 }
 
 function fadeIn() {
+	isFading = true;
+
 	// volume ranges from 0 to 100, this determines by how much the volume number
 	// should be incremented at every step of the fade in
-	const volumeStep = 100 / (CROSSFADE_DURATION_MS / CROSSFADE_INTERVAL_MS);
+	const volumeStep =
+		maxVolume / (CROSSFADE_DURATION_MS / CROSSFADE_INTERVAL_MS);
 	const handle = setInterval(() => {
-		volume += volumeStep;
-		if (volume >= 100) {
+		currentVolume += volumeStep;
+		if (currentVolume >= maxVolume) {
 			clearInterval(handle);
+			currentVolume = maxVolume;
+			isFading = false;
 		} else {
-			currentAudio.volume = volume / 100;
+			currentAudio.volume = currentVolume / 100;
 		}
 	}, CROSSFADE_INTERVAL_MS);
 }
 
 function fadeOut() {
+	isFading = true;
+
 	// volume ranges from 0 to 100, this determines by how much the volume number
 	// should be decremented at every step of the fade out
-	const volumeStep = 100 / (CROSSFADE_DURATION_MS / CROSSFADE_INTERVAL_MS);
+	const volumeStep =
+		maxVolume / (CROSSFADE_DURATION_MS / CROSSFADE_INTERVAL_MS);
 	const handle = setInterval(() => {
-		volume -= volumeStep;
-		if (volume <= 0) {
+		currentVolume -= volumeStep;
+		if (currentVolume <= 0) {
 			clearInterval(handle);
+			currentVolume = 0;
+			isFading = false;
 		} else {
-			currentAudio.volume = volume / 100;
+			currentAudio.volume = currentVolume / 100;
 		}
 	}, CROSSFADE_INTERVAL_MS);
 }
@@ -102,4 +116,14 @@ playBtn.onclick = () => {
 	}
 };
 
+volumeSlider.oninput = () => {
+	maxVolume = volumeSlider.value;
+	currentVolumeLabel.textContent = `${maxVolume}%`;
+	if (!isFading) {
+		currentAudio.volume = maxVolume / 100;
+		currentVolume = maxVolume;
+	}
+};
+
+volumeSlider.value = 100;
 animateCat();

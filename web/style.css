@@ -1,9 +1,11 @@
 :root {
   font-family: monospace;
   --text: #4c4f69;
-  --surface0: #ccd0da;
   --surface1: #bcc0cc;
   --base: #eff1f5;
+  --lavender: #7287fd;
+
+  --range-height: 12px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -11,6 +13,7 @@
     --text: #cdd6f4;
     --surface1: #45475a;
     --base: #1e1e2e;
+    --lavender: #b4befe;
   }
 }
 
@@ -20,8 +23,8 @@ body {
 }
 
 body {
-  width: calc(100% - 4rem - 1px);
-  height: calc(100vh - 4rem - 1px);
+  width: calc(100% - 4rem - 2px);
+  height: calc(100vh - 4rem - 2px);
   padding: 2rem;
   margin: 0;
   background-color: var(--base);
@@ -35,6 +38,7 @@ h5,
 h6 {
   margin: 0;
   font-weight: 400;
+  color: var(--text);
 }
 
 main {
@@ -65,7 +69,7 @@ main {
   display: flex;
   align-items: end;
   justify-content: start;
-  border: 1px solid var(--text);
+  border: 2px solid var(--text);
   border-radius: 2px;
 }
 
@@ -110,6 +114,46 @@ main {
 .button-container {
   margin-top: 2rem;
   display: flex;
+}
+
+.volume-slider-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.5rem 1rem;
+  margin: 1rem;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.volume-slider-container > output {
+  color: var(--text);
+  margin-right: 1rem;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  input[type="range"] {
+    overflow: hidden;
+    -webkit-appearance: none;
+    border: 2px solid var(--text);
+    background-color: var(--base);
+  }
+
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: var(--range-height);
+    -webkit-appearance: none;
+    color: #13bba4;
+    margin-top: -1px;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    width: var(--range-height);
+    height: var(--range-height);
+    -webkit-appearance: none;
+    background: var(--text);
+    box-shadow: -80px 0 0 80px var(--lavender);
+  }
 }
 
 .button {
