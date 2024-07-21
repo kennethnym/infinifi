@@ -4,7 +4,6 @@
   --surface0: #ccd0da;
   --surface1: #bcc0cc;
   --base: #eff1f5;
-  --background-color: #f0f0f0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -124,14 +123,14 @@ main {
 }
 
 .button:hover {
-  background-color: #f0f0f0;
+  background-color: var(--surface1);
   background-size: 10px 10px;
   background-image: repeating-linear-gradient(
     45deg,
-    #c9c9c9 0,
-    #c9c9c9 1px,
-    #f0f0f0 0,
-    #f0f0f0 50%
+    var(--surface1) 0,
+    var(--surface1) 1px,
+    var(--base) 0,
+    var(--base) 50%
   );
 }
 
