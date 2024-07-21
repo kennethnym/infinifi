@@ -4,8 +4,10 @@
   --surface1: #bcc0cc;
   --base: #eff1f5;
   --lavender: #7287fd;
+  --maroon: #e64553;
 
   --range-height: 12px;
+  --range-accent: var(--lavender);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -14,6 +16,8 @@
     --surface1: #45475a;
     --base: #1e1e2e;
     --lavender: #b4befe;
+    --maroon: #eba0ac;
+    --range-accent: var(--maroon);
   }
 }
 
@@ -152,7 +156,7 @@ main {
     height: var(--range-height);
     -webkit-appearance: none;
     background: var(--text);
-    box-shadow: -80px 0 0 80px var(--lavender);
+    box-shadow: -80px 0 0 80px var(--range-accent);
   }
 }
 
