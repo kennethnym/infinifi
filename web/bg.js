@@ -1,4 +1,4 @@
-const COLOR_SURFACE1 = "#dce0e8";
+const DOT_COLOR = "#dce0e8";
 const DOT_RADIUS = 1 * devicePixelRatio;
 
 const canvas = document.getElementById("bg");
@@ -29,7 +29,7 @@ function drawDot(x, y) {
 			((effectRadius - Math.min(distance, effectRadius)) / effectRadius);
 	ctx.beginPath();
 	ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
-	ctx.fillStyle = COLOR_SURFACE1;
+	ctx.fillStyle = DOT_COLOR;
 	ctx.fill();
 }
 

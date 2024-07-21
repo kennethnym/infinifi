@@ -44,7 +44,7 @@ main {
   align-items: start;
   margin: 2rem;
 }
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   main {
     margin: 4rem;
   }
