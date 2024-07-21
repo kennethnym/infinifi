@@ -1,5 +1,7 @@
 import threading
+import io
 
+import torch
 import modal
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
@@ -36,15 +38,18 @@ def generate_new_audio():
     global current_index
 
     offset = 0
-    wav = []
+    wav_buf = None
     if current_index == 0:
         offset = 5
-        wav = model.generate.remote(prompts)
+        wav_buf = model.generate.remote(prompts)
     elif current_index == 5:
         offset = 0
-        wav = model.generate.remote(prompts)
+        wav_buf = model.generate.remote(prompts)
     else:
         return
+
+    wav = torch.load(io.BytesIO(wav_buf), map_location=torch.device("cpu"))
+    sample_rate = model.sample_rate.remote()
 
     print("generating new audio...")
 
@@ -53,7 +58,7 @@ def generate_new_audio():
         audio_write(
             f"{idx + offset}",
             one_wav.cpu(),
-            model.sample_rate,
+            sample_rate,
             format="mp3",
             strategy="loudness",
             loudness_compressor=True,

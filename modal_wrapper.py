@@ -1,5 +1,7 @@
 from audiocraft.models.musicgen import MusicGen
 import modal
+import io
+import torch
 
 
 MODEL_DIR = "/root/model/model_input"
@@ -36,6 +38,12 @@ class Model:
         self.model.set_generation_params(duration=60)
 
     @modal.method()
+    def sample_rate(self):
+        return self.model.sample_rate
+
+    @modal.method()
     def generate(self, prompts):
         wav = self.model.generate(prompts)
-        return [one_wav for i, one_wav in enumerate(wav)]
+        buf = io.BytesIO()
+        torch.save(wav, buf)
+        return buf.getvalue()
