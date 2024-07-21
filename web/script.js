@@ -1,5 +1,7 @@
 const playBtn = document.getElementById("play-btn");
 const catImg = document.getElementsByClassName("cat")[0];
+const clickAudio = new Audio("/audio/click.wav");
+const clickReleaseAudio = new Audio("/audio/click-release.wav");
 
 const CROSSFADE_DURATION_MS = 5000;
 const CROSSFADE_INTERVAL_MS = 20;
@@ -80,6 +82,17 @@ function animateCat() {
 		catImg.src = `/images/cat-${current}.png`;
 	}, 500);
 }
+
+playBtn.onmousedown = () => {
+	clickAudio.play();
+	document.addEventListener(
+		"mouseup",
+		() => {
+			clickReleaseAudio.play();
+		},
+		{ once: true },
+	);
+};
 
 playBtn.onclick = () => {
 	if (isPlaying) {
