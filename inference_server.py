@@ -1,7 +1,7 @@
 import asyncio
 from websockets.server import serve
 
-# from generate import generate
+from generate import generate
 
 
 async def handler(websocket):
@@ -11,12 +11,12 @@ async def handler(websocket):
 
         print("generating new audio clips...")
 
-        # generate()
+        generate()
 
         print("audio generated")
 
         for i in range(5):
-            with open(f"{i + 5}.mp3", "rb") as f:
+            with open(f"{i}.mp3", "rb") as f:
                 data = f.read()
                 await websocket.send(data)
 
