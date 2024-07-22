@@ -119,7 +119,7 @@ playBtn.onclick = () => {
 volumeSlider.oninput = () => {
 	maxVolume = volumeSlider.value;
 	currentVolumeLabel.textContent = `${maxVolume}%`;
-	if (!isFading) {
+	if (!isFading && currentAudio) {
 		currentAudio.volume = maxVolume / 100;
 		currentVolume = maxVolume;
 	}
