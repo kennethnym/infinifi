@@ -249,5 +249,4 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/python,windows,macos,linux
 
-*.wav
 *.mp3
