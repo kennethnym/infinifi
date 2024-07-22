@@ -149,7 +149,6 @@ main {
     height: var(--range-height);
     -webkit-appearance: none;
     color: #13bba4;
-    margin-top: -1px;
   }
 
   input[type="range"]::-webkit-slider-thumb {
