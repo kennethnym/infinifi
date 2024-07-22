@@ -8,6 +8,7 @@
 
   --range-height: 12px;
   --range-accent: var(--lavender);
+  --link-accent: var(--lavender);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,6 +19,7 @@
     --lavender: #b4befe;
     --maroon: #eba0ac;
     --range-accent: var(--maroon);
+    --link-accent: var(--maroon);
   }
 }
 
@@ -28,7 +30,7 @@ body {
 
 body {
   width: calc(100% - 4rem - 2px);
-  height: calc(100vh - 4rem - 2px);
+  height: calc(100vh - 6rem - 2px);
   padding: 2rem;
   margin: 0;
   background-color: var(--base);
@@ -55,6 +57,22 @@ main {
   main {
     margin: 4rem;
   }
+}
+
+footer {
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+footer > span {
+  color: var(--text);
+  opacity: 0.5;
+}
+
+a {
+  color: var(--link-accent);
 }
 
 #bg {
