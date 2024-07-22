@@ -1,0 +1,2 @@
+fastapi==0.111.1
+websocket_client==1.8.0
