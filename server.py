@@ -1,8 +1,6 @@
 import threading
-import io
 
-import torch
-import modal
+from generate import generate
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
@@ -23,9 +21,6 @@ prompts = [
 ]
 
 
-model = modal.Cls.lookup("infinifi", "Model")
-
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     advance()
@@ -38,31 +33,16 @@ def generate_new_audio():
     global current_index
 
     offset = 0
-    wav_buf = None
     if current_index == 0:
         offset = 5
-        wav_buf = model.generate.remote(prompts)
     elif current_index == 5:
         offset = 0
-        wav_buf = model.generate.remote(prompts)
     else:
         return
 
-    wav = torch.load(io.BytesIO(wav_buf), map_location=torch.device("cpu"))
-    sample_rate = model.sample_rate.remote()
-
     print("generating new audio...")
 
-    for idx, one_wav in enumerate(wav):
-        # Will save under {idx}.wav, with loudness normalization at -14 db LUFS.
-        audio_write(
-            f"{idx + offset}",
-            one_wav.cpu(),
-            sample_rate,
-            format="mp3",
-            strategy="loudness",
-            loudness_compressor=True,
-        )
+    generate(offset)
 
     print("audio generated.")
 
