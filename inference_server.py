@@ -22,7 +22,7 @@ async def handler(websocket):
 
 
 async def main():
-    async with serve(handler, "", 22):
+    async with serve(handler, "", 8001):
         await asyncio.Future()
 
 
