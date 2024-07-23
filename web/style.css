@@ -243,12 +243,14 @@ input[type="range"]::-ms-fill-upper {
   }
 }
 
+.button.button-active,
 .button:active {
   background: var(--text) !important;
   color: var(--base);
   transform: translate(4px, 4px);
 }
 
+.button.button-active::after,
 .button:active::after {
   content: none;
 }
