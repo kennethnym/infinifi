@@ -2,10 +2,8 @@ const playBtn = document.getElementById("play-btn");
 const catImg = document.getElementsByClassName("cat")[0];
 const volumeSlider = document.getElementById("volume-slider");
 const currentVolumeLabel = document.getElementById("current-volume-label");
-// const clickAudio = new Audio("./audio/click.wav");
-// const clickReleaseAudio = new Audio("./audio/click-release.wav");
-const clickAudio = new Audio();
-const clickReleaseAudio = new Audio();
+const clickAudio = new Audio("./audio/click.wav");
+const clickReleaseAudio = new Audio("./audio/click-release.wav");
 
 const CROSSFADE_DURATION_MS = 5000;
 const CROSSFADE_INTERVAL_MS = 20;
