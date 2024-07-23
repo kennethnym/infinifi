@@ -1,23 +1,19 @@
 <!doctype html>
 <html>
 	<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<title>infinifi</title>
 
-    <link rel="preload" href="./style.css" as="style">
-    <link rel="modulepreload" href="./bg.js">
-    <link rel="modulepreload" href="./script.js">
-    <link rel="preload" href="./images/cat-0.png" as="image">
-    <link rel="preload" href="./images/eeping-cat.png" as="image">
-    <link rel="prefetch" href="./images/cat-1.png" as="image">
-    <link rel="prefetch" href="./images/cat-2.png" as="image">
-    <link rel="prefetch" href="./images/cat-3.png" as="image">
-    <link rel="prefetch" href="./audio/click.wav" as="audio">
-    <link rel="prefetch" href="./audio/click-release.wav" as="audio">
-
-    <link rel="stylesheet" href="./style.css">
+		<link rel="stylesheet" href="./style.css">
+		<link rel="modulepreload" href="./bg.js">
+		<link rel="modulepreload" href="./script.js">
+		<link rel="preload" href="./images/cat-0.png" as="image">
+		<link rel="preload" href="./images/eeping-cat.png" as="image">
+		<link rel="prefetch" href="./images/cat-1.png" as="image">
+		<link rel="prefetch" href="./images/cat-2.png" as="image">
+		<link rel="prefetch" href="./images/cat-3.png" as="image">
 	</head>
 	<body>
 		<div class="container">
@@ -42,6 +38,9 @@
 		</footer>
 
 		<canvas id="bg"></canvas>
+
+		<audio id="click-audio" preload="auto" src="./audio/click.wav"></audio>
+		<audio id="click-release-audio" preload="auto" src="./audio/click-release.wav"></audio>
 
 		<script type="module" src="./bg.js"></script>
 		<script type="module" src="./script.js"></script>
