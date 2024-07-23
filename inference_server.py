@@ -22,7 +22,7 @@ async def handler(websocket):
 
 
 async def main():
-    async with serve(handler, "", 8001):
+    async with serve(handler, "localhost", 8001, ping_interval=5):
         await asyncio.Future()
 
 

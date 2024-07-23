@@ -13,17 +13,16 @@ current_index = -1
 t = None
 # websocket connection to the inference server
 ws = None
+ws_url = ""
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global ws
+    global ws, ws_url
 
-    url = os.environ.get("INFERENCE_SERVER_WS_URL")
-    if not url:
-        url = "ws://localhost:8001"
-
-    ws = websocket.create_connection(url)
-    print(f"websocket connected to {url}")
+    ws_url = os.environ.get("INFERENCE_SERVER_WS_URL")
+    if not ws_url:
+        ws_url = "ws://localhost:8001"
 
     advance()
 
@@ -36,7 +35,7 @@ async def lifespan(app: FastAPI):
 
 
 def generate_new_audio():
-    if not ws:
+    if not ws_url:
         return
 
     global current_index
@@ -50,6 +49,9 @@ def generate_new_audio():
         return
 
     print("generating new audio...")
+
+    ws = websocket.create_connection(ws_url)
+    print(f"websocket connected to {ws_url}")
 
     ws.send("generate")
 
@@ -65,6 +67,8 @@ def generate_new_audio():
             f.write(wav)
 
     print("audio generated.")
+
+    ws.close()
 
 
 def advance():
