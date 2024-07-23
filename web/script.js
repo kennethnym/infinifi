@@ -97,6 +97,30 @@ function animateCat() {
 	}, 500);
 }
 
+/**
+ * Allow audio to be played/paused using the space bar
+ */
+function enableSpaceBarControl() {
+	document.addEventListener("keydown", (event) => {
+		if (event.code === "Space") {
+			playBtn.classList.add("button-active");
+			playBtn.dispatchEvent(new MouseEvent("mousedown"));
+			clickAudio.play();
+		}
+	});
+	document.addEventListener("keyup", (event) => {
+		if (event.code === "Space") {
+			playBtn.classList.remove("button-active");
+			clickReleaseAudio.play();
+		}
+	});
+	document.addEventListener("keypress", (event) => {
+		if (event.code === "Space") {
+			playBtn.click();
+		}
+	});
+}
+
 playBtn.onmousedown = () => {
 	clickAudio.play();
 	document.addEventListener(
@@ -127,3 +151,4 @@ volumeSlider.oninput = () => {
 
 volumeSlider.value = 100;
 animateCat();
+enableSpaceBarControl();

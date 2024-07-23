@@ -36,6 +36,13 @@ body {
   background-color: var(--base);
   overflow: hidden;
 }
+@media (min-width: 768px) {
+  body {
+    width: calc(100% - 8rem - 2px);
+    height: calc(100vh - 10rem - 2px);
+    padding: 4rem;
+  }
+}
 
 h1,
 h2,
@@ -65,6 +72,11 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+@media (min-width: 768px) {
+  footer {
+    padding: 2rem 0;
+  }
 }
 
 footer > span {
@@ -245,12 +257,14 @@ input[type="range"]::-ms-fill-upper {
   }
 }
 
+.button.button-active,
 .button:active {
   background: var(--text) !important;
   color: var(--base);
   transform: translate(4px, 4px);
 }
 
+.button.button-active::after,
 .button:active::after {
   content: none;
 }
