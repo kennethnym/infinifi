@@ -35,6 +35,13 @@ body {
   margin: 0;
   background-color: var(--base);
 }
+@media (min-width: 768px) {
+  body {
+    width: calc(100% - 8rem - 2px);
+    height: calc(100vh - 10rem - 2px);
+    padding: 4rem;
+  }
+}
 
 h1,
 h2,
@@ -64,6 +71,11 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+@media (min-width: 768px) {
+  footer {
+    padding: 2rem 0;
+  }
 }
 
 footer > span {
