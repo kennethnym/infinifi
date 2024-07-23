@@ -1,8 +1,16 @@
 <!doctype html>
 <html>
 	<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
 		<title>infinifi</title>
-		<link rel="stylesheet" href="./style.css">
+    
+    <link rel="preload" href="./style.css" as="style">
+    <link rel="modulepreload" href="./bg.js">
+    <link rel="modulepreload" href="./script.js">
+
+    <link rel="stylesheet" href="./style.css">
 	</head>
 	<body>
 		<div class="container">
@@ -28,7 +36,7 @@
 
 		<canvas id="bg"></canvas>
 
-		<script type="text/javascript" src="./bg.js"></script>
-		<script type="text/javascript" src="./script.js"></script>
+		<script type="module" src="./dist/bg.js"></script>
+		<script type="module" src="./dist/script.js"></script>
 	</body>
 </html>
