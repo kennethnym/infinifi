@@ -1,1 +1,131 @@
-(()=>{var u=document.getElementById("play-btn"),r=document.getElementsByClassName("cat")[0],s=document.getElementById("volume-slider"),v=document.getElementById("current-volume-label"),p=new Audio("./audio/click.wav"),f=new Audio("./audio/click-release.wav"),m=5e3,a=20,A=6e4,i=!1,o=!1,e,l=100,t=0;function d(){e=new Audio(`./current.mp3?t=${Date.now()}`),e.onplay=()=>{i=!0,u.innerText="pause"},e.onpause=()=>{i=!1,t=0,u.innerText="play"},e.onended=()=>{t=0,d()},e.volume=0,e.play(),y(),setTimeout(()=>{S()},A-m)}function I(){e.pause(),e.volume=0,t=0}function y(){o=!0;let n=l/(m/a),c=setInterval(()=>{t+=n,t>=l?(clearInterval(c),t=l,o=!1):e.volume=t/100},a)}function S(){o=!0;let n=l/(m/a),c=setInterval(()=>{t-=n,t<=0?(clearInterval(c),t=0,o=!1):e.volume=t/100},a)}function g(){let n=0;setInterval(()=>{n===3?n=0:n+=1,r.src=`./images/cat-${n}.png`},500)}u.onmousedown=()=>{p.play(),document.addEventListener("mouseup",()=>{f.play()},{once:!0})};u.onclick=()=>{i?I():d()};s.oninput=()=>{l=s.value,v.textContent=`${l}%`,!o&&e&&(e.volume=l/100,t=l)};s.value=100;g();})();
+const playBtn = document.getElementById("play-btn");
+const catImg = document.getElementsByClassName("cat")[0];
+const volumeSlider = document.getElementById("volume-slider");
+const currentVolumeLabel = document.getElementById("current-volume-label");
+// const clickAudio = new Audio("./audio/click.wav");
+// const clickReleaseAudio = new Audio("./audio/click-release.wav");
+const clickAudio = new Audio();
+const clickReleaseAudio = new Audio();
+
+const CROSSFADE_DURATION_MS = 5000;
+const CROSSFADE_INTERVAL_MS = 20;
+const AUDIO_DURATION_MS = 60000;
+
+let isPlaying = false;
+let isFading = false;
+let currentAudio;
+let maxVolume = 100;
+let currentVolume = 0;
+
+function playAudio() {
+	// add a random query parameter at the end to prevent browser caching
+	currentAudio = new Audio(`./current.mp3?t=${Date.now()}`);
+	currentAudio.onplay = () => {
+		isPlaying = true;
+		playBtn.innerText = "pause";
+	};
+	currentAudio.onpause = () => {
+		isPlaying = false;
+		currentVolume = 0;
+		playBtn.innerText = "play";
+	};
+	currentAudio.onended = () => {
+		currentVolume = 0;
+		playAudio();
+	};
+	currentAudio.volume = 0;
+
+	currentAudio.play();
+
+	fadeIn();
+	setTimeout(() => {
+		fadeOut();
+	}, AUDIO_DURATION_MS - CROSSFADE_DURATION_MS);
+}
+
+function pauseAudio() {
+	currentAudio.pause();
+	currentAudio.volume = 0;
+	currentVolume = 0;
+}
+
+function fadeIn() {
+	isFading = true;
+
+	// volume ranges from 0 to 100, this determines by how much the volume number
+	// should be incremented at every step of the fade in
+	const volumeStep =
+		maxVolume / (CROSSFADE_DURATION_MS / CROSSFADE_INTERVAL_MS);
+	const handle = setInterval(() => {
+		currentVolume += volumeStep;
+		if (currentVolume >= maxVolume) {
+			clearInterval(handle);
+			currentVolume = maxVolume;
+			isFading = false;
+		} else {
+			currentAudio.volume = currentVolume / 100;
+		}
+	}, CROSSFADE_INTERVAL_MS);
+}
+
+function fadeOut() {
+	isFading = true;
+
+	// volume ranges from 0 to 100, this determines by how much the volume number
+	// should be decremented at every step of the fade out
+	const volumeStep =
+		maxVolume / (CROSSFADE_DURATION_MS / CROSSFADE_INTERVAL_MS);
+	const handle = setInterval(() => {
+		currentVolume -= volumeStep;
+		if (currentVolume <= 0) {
+			clearInterval(handle);
+			currentVolume = 0;
+			isFading = false;
+		} else {
+			currentAudio.volume = currentVolume / 100;
+		}
+	}, CROSSFADE_INTERVAL_MS);
+}
+
+function animateCat() {
+	let current = 0;
+	setInterval(() => {
+		if (current === 3) {
+			current = 0;
+		} else {
+			current += 1;
+		}
+		catImg.src = `./images/cat-${current}.png`;
+	}, 500);
+}
+
+playBtn.onmousedown = () => {
+	clickAudio.play();
+	document.addEventListener(
+		"mouseup",
+		() => {
+			clickReleaseAudio.play();
+		},
+		{ once: true },
+	);
+};
+
+playBtn.onclick = () => {
+	if (isPlaying) {
+		pauseAudio();
+	} else {
+		playAudio();
+	}
+};
+
+volumeSlider.oninput = () => {
+	maxVolume = volumeSlider.value;
+	currentVolumeLabel.textContent = `${maxVolume}%`;
+	if (!isFading && currentAudio) {
+		currentAudio.volume = maxVolume / 100;
+		currentVolume = maxVolume;
+	}
+};
+
+volumeSlider.value = 100;
+animateCat();
