@@ -14,15 +14,6 @@ t = None
 # websocket connection to the inference server
 ws = None
 
-prompts = [
-    "gentle, calming lo-fi beats that helps with studying and focusing",
-    "calm, piano lo-fi beats to help with studying and focusing",
-    "gentle lo-fi hip-hop to relax to",
-    "gentle, quiet synthwave lo-fi beats",
-    "morning lo-fi beats",
-]
-
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global ws
