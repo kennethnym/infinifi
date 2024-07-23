@@ -170,21 +170,21 @@ a {
   input[type="range"] {
     overflow: hidden;
     height: var(--range-height);
-    -webkit-appearance: none;
+    appearance: none;
     border: 2px solid var(--text);
     background-color: var(--base);
   }
 
   input[type="range"]::-webkit-slider-runnable-track {
     height: var(--range-height);
-    -webkit-appearance: none;
+    appearance: none;
     color: #13bba4;
   }
 
   input[type="range"]::-webkit-slider-thumb {
     width: var(--range-height);
     height: var(--range-height);
-    -webkit-appearance: none;
+    appearance: none;
     background: var(--text);
     box-shadow: -80px 0 0 80px var(--range-accent);
   }
