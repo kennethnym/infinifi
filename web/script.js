@@ -147,6 +147,8 @@ volumeSlider.oninput = () => {
 		currentAudio.volume = maxVolume / 100;
 		currentVolume = maxVolume;
 	}
+	clickAudio.volume = volumeSlider.value / 100;
+	clickReleaseAudio.volume = volumeSlider.value / 100;
 };
 
 volumeSlider.value = 100;
