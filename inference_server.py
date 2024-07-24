@@ -2,6 +2,7 @@ import asyncio
 from websockets.server import serve
 
 from generate import generate
+from logger import log_info
 
 
 async def handler(websocket):
@@ -9,11 +10,11 @@ async def handler(websocket):
         if message != "generate":
             continue
 
-        print("generating new audio clips...")
+        log_info("generating new audio clips...")
 
         generate()
 
-        print("audio generated")
+        log_info("audio generated")
 
         for i in range(5):
             with open(f"{i}.mp3", "rb") as f:

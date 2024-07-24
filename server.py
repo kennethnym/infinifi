@@ -6,6 +6,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from logger import log_info, log_warn
 
 # the index of the current audio track from 0 to 9
 current_index = -1
@@ -48,27 +49,31 @@ def generate_new_audio():
     else:
         return
 
-    print("generating new audio...")
+    log_info("generating new audio...")
 
-    ws = websocket.create_connection(ws_url)
-    print(f"websocket connected to {ws_url}")
+    try:
+        ws = websocket.create_connection(ws_url)
 
-    ws.send("generate")
+        ws.send("generate")
 
-    wavs = []
-    for i in range(5):
-        raw = ws.recv()
-        if isinstance(raw, str):
-            continue
-        wavs.append(raw)
+        wavs = []
+        for i in range(5):
+            raw = ws.recv()
+            if isinstance(raw, str):
+                continue
+            wavs.append(raw)
 
-    for i, wav in enumerate(wavs):
-        with open(f"{i + offset}.mp3", "wb") as f:
-            f.write(wav)
+        for i, wav in enumerate(wavs):
+            with open(f"{i + offset}.mp3", "wb") as f:
+                f.write(wav)
 
-    print("audio generated.")
+        log_info("audio generated.")
 
-    ws.close()
+        ws.close()
+    except:
+        log_warn(
+            "inference server potentially unreachable. recycling cached audio for now."
+        )
 
 
 def advance():
@@ -79,7 +84,7 @@ def advance():
     else:
         current_index = current_index + 1
 
-    # threading.Thread(target=generate_new_audio).start()
+    threading.Thread(target=generate_new_audio).start()
 
     t = threading.Timer(60, advance)
     t.start()
