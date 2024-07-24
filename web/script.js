@@ -2,8 +2,8 @@ const playBtn = document.getElementById("play-btn");
 const catImg = document.getElementsByClassName("cat")[0];
 const volumeSlider = document.getElementById("volume-slider");
 const currentVolumeLabel = document.getElementById("current-volume-label");
-const clickAudio = new Audio("/audio/click.wav");
-const clickReleaseAudio = new Audio("/audio/click-release.wav");
+const clickAudio = document.getElementById("click-audio");
+const clickReleaseAudio = document.getElementById("click-release-audio");
 
 const CROSSFADE_DURATION_MS = 5000;
 const CROSSFADE_INTERVAL_MS = 20;
@@ -17,7 +17,7 @@ let currentVolume = 0;
 
 function playAudio() {
 	// add a random query parameter at the end to prevent browser caching
-	currentAudio = new Audio(`/current.mp3?t=${Date.now()}`);
+	currentAudio = new Audio(`./current.mp3?t=${Date.now()}`);
 	currentAudio.onplay = () => {
 		isPlaying = true;
 		playBtn.innerText = "pause";
@@ -93,7 +93,7 @@ function animateCat() {
 		} else {
 			current += 1;
 		}
-		catImg.src = `/images/cat-${current}.png`;
+		catImg.src = `./images/cat-${current}.png`;
 	}, 500);
 }
 

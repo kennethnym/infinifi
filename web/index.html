@@ -1,15 +1,22 @@
 <!doctype html>
 <html>
 	<head>
+		<meta charset="utf-8">
 		<title>infinifi</title>
-		<link rel="stylesheet" href="/style.css">
+
+		<link rel="preload" href="./style.css" as="style">
+		<link rel="modulepreload" href="./bg.js">
+		<link rel="modulepreload" href="./script.js">
+		<link rel="preload" href="./images/cat-0.png" as="image">
+		<link rel="preload" href="./images/eeping-cat.png" as="image">
+		<link rel="stylesheet" href="./style.css">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<meta name="twitter:card" content="summary"></meta>
-		<meta name="twitter:site" content="@kennethnym"></meta>
-		<meta name="twitter:title" content="infinifi"></meta>
-		<meta name="twitter:description" content="infinite lo-fi beats in the background"></meta>
+		<meta name="twitter:card" content="summary">
+		<meta name="twitter:site" content="@kennethnym">
+		<meta name="twitter:title" content="infinifi">
+		<meta name="twitter:description" content="infinite lo-fi beats in the background">
 	</head>
 	<body>
 		<div class="container">
@@ -24,8 +31,8 @@
 					<input id="volume-slider" type="range" min="0" max="100" step="1" />
 				</div>
 			</main>
-			<img class="cat" src="/images/cat-0.png"></img>
-			<img class="eeping-cat" src="/images/eeping-cat.png"></img>
+			<img class="cat" src="./images/cat-0.png">
+			<img class="eeping-cat" src="./images/eeping-cat.png">
 		</div>
 
 		<footer>
@@ -35,7 +42,10 @@
 
 		<canvas id="bg"></canvas>
 
-		<script type="text/javascript" src="/bg.js"></script>
-		<script type="text/javascript" src="/script.js"></script>
+		<audio id="click-audio" preload="auto" src="./audio/click.wav"></audio>
+		<audio id="click-release-audio" preload="auto" src="./audio/click-release.wav"></audio>
+
+		<script type="module" src="./bg.js"></script>
+		<script type="module" src="./script.js"></script>
 	</body>
 </html>
