@@ -26,6 +26,7 @@
 html,
 body {
   width: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -151,6 +152,10 @@ a {
   display: flex;
 }
 
+.button-container .button {
+  cursor: pointer;
+}
+
 .volume-slider-container {
   position: absolute;
   top: 0;
@@ -174,6 +179,7 @@ a {
     appearance: none;
     border: 2px solid var(--text);
     background-color: var(--base);
+    cursor: col-resize;
   }
 
   input[type="range"]::-webkit-slider-runnable-track {
