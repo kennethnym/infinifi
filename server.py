@@ -79,7 +79,7 @@ def advance():
     else:
         current_index = current_index + 1
 
-    threading.Thread(target=generate_new_audio).start()
+    # threading.Thread(target=generate_new_audio).start()
 
     t = threading.Timer(60, advance)
     t.start()
@@ -90,7 +90,6 @@ app = FastAPI(lifespan=lifespan)
 
 @app.get("/current.mp3")
 def get_current_audio():
-    print("hello")
     return FileResponse(f"{current_index}.mp3")
 
 
