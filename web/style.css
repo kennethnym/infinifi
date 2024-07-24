@@ -34,6 +34,7 @@ body {
   padding: 2rem;
   margin: 0;
   background-color: var(--base);
+  overflow: hidden;
 }
 @media (min-width: 768px) {
   body {
@@ -167,7 +168,7 @@ a {
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
-  input[type="range"] {
+  input[type='range'] {
     overflow: hidden;
     height: var(--range-height);
     -webkit-appearance: none;
@@ -175,13 +176,13 @@ a {
     background-color: var(--base);
   }
 
-  input[type="range"]::-webkit-slider-runnable-track {
+  input[type='range']::-webkit-slider-runnable-track {
     height: var(--range-height);
     -webkit-appearance: none;
     color: #13bba4;
   }
 
-  input[type="range"]::-webkit-slider-thumb {
+  input[type='range']::-webkit-slider-thumb {
     width: var(--range-height);
     height: var(--range-height);
     -webkit-appearance: none;
@@ -190,18 +191,18 @@ a {
   }
 }
 
-input[type="range"]::-moz-range-progress {
+input[type='range']::-moz-range-progress {
   border: none;
   height: var(--range-height);
   background-color: var(--range-accent);
 }
 
-input[type="range"]::-moz-range-track {
+input[type='range']::-moz-range-track {
   border: none;
   background-color: var(--base);
 }
 
-input[type="range"]::-moz-range-thumb {
+input[type='range']::-moz-range-thumb {
   appearance: none;
   border: none;
   border-radius: 0;
@@ -211,10 +212,10 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* IE*/
-input[type="range"]::-ms-fill-lower {
+input[type='range']::-ms-fill-lower {
   background-color: var(--range-accent);
 }
-input[type="range"]::-ms-fill-upper {
+input[type='range']::-ms-fill-upper {
   background-color: var(--base);
 }
 
@@ -277,7 +278,7 @@ input[type="range"]::-ms-fill-upper {
   right: -1px;
   bottom: -1px;
   padding: 0.5rem 1rem;
-  content: "";
+  content: '';
   background-color: var(--text);
   z-index: -1;
   transform: translate(2px, 2px);
