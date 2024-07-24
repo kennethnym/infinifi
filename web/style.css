@@ -175,7 +175,7 @@ a {
     border: 2px solid var(--text);
     background-color: var(--base);
   }
-  
+
   input[type="range"]::-webkit-slider-runnable-track {
     height: var(--range-height);
     appearance: none;
@@ -262,7 +262,7 @@ input[type="range"]::-ms-fill-upper {
 .button:active {
   background: var(--text) !important;
   color: var(--base);
-  transform: translate(3px, 3px);
+  transform: translate(4px, 4px);
 }
 
 .button.button-active::after,
