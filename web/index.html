@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
     <title>infinifi</title>
 
-    <link rel="preload" href="./style.css" as="style" />
-    <link rel="modulepreload" href="./bg.js" />
-    <link rel="modulepreload" href="./script.js" />
-    <link rel="preload" href="./images/cat-0.png" as="image" />
-    <link rel="preload" href="./images/eeping-cat.png" as="image" />
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="preload" href="./style.css" as="style">
+    <link rel="modulepreload" href="./bg.js">
+    <link rel="modulepreload" href="./script.js">
+    <link rel="preload" href="./images/cat-0.png" as="image">
+    <link rel="preload" href="./images/eeping-cat.png" as="image">
+    <link rel="stylesheet" href="./style.css">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@kennethnym" />
-    <meta name="twitter:title" content="infinifi" />
-    <meta name="twitter:description" content="infinite lo-fi beats in the background" />
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@kennethnym">
+    <meta name="twitter:title" content="infinifi">
+    <meta name="twitter:description" content="infinite lo-fi beats in the background">
   </head>
   <body>
     <div class="container">
@@ -28,26 +28,22 @@
         </div>
         <div class="volume-slider-container">
           <output id="current-volume-label" for="volume-slider">100%</output>
-          <input id="volume-slider" type="range" min="0" max="100" step="1" />
+          <input id="volume-slider" type="range" min="0" max="100" step="1">
         </div>
       </main>
-      <img class="cat" src="./images/cat-0.png" />
-      <img class="eeping-cat" src="./images/eeping-cat.png" />
+      <img class="cat" src="./images/cat-0.png">
+      <img class="eeping-cat" src="./images/eeping-cat.png">
     </div>
 
-		<footer>
-			<span>made by kennethnym &lt;3 ·&nbsp;</span>
-			<a target="_blank" href="https://github.com/kennethnym/infinifi">github</a>
-		</footer>
+    <footer>
+      <span>made by kennethnym &lt;3 ·&nbsp;</span>
+      <a target="_blank" href="https://github.com/kennethnym/infinifi">github</a>
+    </footer>
 
     <canvas id="bg"></canvas>
 
     <audio id="click-audio" preload="auto" src="./audio/click.wav"></audio>
-    <audio
-      id="click-release-audio"
-      preload="auto"
-      src="./audio/click-release.wav"
-    ></audio>
+    <audio id="click-release-audio" preload="auto" src="./audio/click-release.wav"></audio>
     <audio id="meow-audio" preload="auto" src="./audio/cat-meow.mp3"></audio>
 
     <script type="module" src="./bg.js"></script>
