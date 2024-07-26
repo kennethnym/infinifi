@@ -4,6 +4,7 @@ const volumeSlider = document.getElementById("volume-slider");
 const currentVolumeLabel = document.getElementById("current-volume-label");
 const clickAudio = document.getElementById("click-audio");
 const clickReleaseAudio = document.getElementById("click-release-audio");
+const meowAudio = document.getElementById("meow-audio");
 
 const CROSSFADE_DURATION_MS = 5000;
 const CROSSFADE_INTERVAL_MS = 20;
@@ -132,6 +133,11 @@ playBtn.onmousedown = () => {
 	);
 };
 
+// Cat audio sound function
+catImg.onmousedown = () => {
+	meowAudio.play();
+};
+
 playBtn.onclick = () => {
 	if (isPlaying) {
 		pauseAudio();
@@ -149,6 +155,7 @@ volumeSlider.oninput = () => {
 	}
 	clickAudio.volume = volumeSlider.value / 100;
 	clickReleaseAudio.volume = volumeSlider.value / 100;
+	meowAudio.volume = volumeSlider.value / 100;
 };
 
 volumeSlider.value = 100;
