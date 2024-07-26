@@ -132,27 +132,6 @@ a {
   margin-bottom: 1rem;
 }
 
-.cat {
-  position: absolute;
-  bottom: 0px;
-  right: 2rem;
-  image-rendering: pixelated;
-  height: 30px;
-}
-@media (min-width: 1024px) {
-  .cat {
-    right: 4rem;
-  }
-}
-
-.eeping-cat {
-  position: absolute;
-  image-rendering: pixelated;
-  top: -16px;
-  right: 50%;
-  height: 15px;
-}
-
 @media (min-width: 768px) {
   main {
     width: 80%;
@@ -304,4 +283,53 @@ input[type="range"]::-ms-fill-upper {
   .button:after {
     opacity: 0.5;
   }
+}
+
+#cat {
+  position: absolute;
+  bottom: 0px;
+  right: 2rem;
+  image-rendering: pixelated;
+  height: 30px;
+}
+@media (min-width: 1024px) {
+  #cat {
+    right: 4rem;
+  }
+}
+
+#heart {
+  display: none;
+  position: absolute;
+  bottom: 24px;
+  right: 2rem;
+  image-rendering: pixelated;
+}
+@media (min-width: 1024px) {
+  #heart {
+    right: 4rem;
+  }
+}
+
+@keyframes heart-animation {
+  0% {
+    display: block;
+  }
+
+  50% {
+    transform: translate(0, -24px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(0, -30px);
+  }
+}
+
+#eeping-cat {
+  position: absolute;
+  image-rendering: pixelated;
+  top: -16px;
+  right: 50%;
+  height: 15px;
 }

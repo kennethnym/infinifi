@@ -3,7 +3,8 @@ const CROSSFADE_INTERVAL_MS = 20;
 const AUDIO_DURATION_MS = 60000;
 
 const playBtn = document.getElementById("play-btn");
-const catImg = document.getElementsByClassName("cat")[0];
+const catImg = document.getElementById("cat");
+const heartImg = document.getElementById("heart");
 const volumeSlider = document.getElementById("volume-slider");
 const currentVolumeLabel = document.getElementById("current-volume-label");
 const clickAudio = document.getElementById("click-audio");
@@ -191,6 +192,15 @@ volumeSlider.oninput = () => {
 	meowAudio.volume = volumeSlider.value / 100;
 };
 volumeSlider.value = 100;
+
+meowAudio.onplay = () => {
+	heartImg.style.display = "block";
+	heartImg.style.animation = "1s linear 0s heart-animation";
+	setTimeout(() => {
+		heartImg.style.display = "none";
+		heartImg.style.animation = "";
+	}, 900);
+};
 
 window.addEventListener("offline", () => {
 	ws = null;
