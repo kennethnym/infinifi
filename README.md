@@ -38,3 +38,7 @@ INFERENCE_SERVER_WS_URL=ws://2.3.1.4:1938 fastapi run server.py --port ${ANY_POR
 
 if you have any feature idea, feel free to use the issue tracker to let me know!
 
+## credits:
+
+- cats by [@PixElthen](https://x.com/pixelthen)
+
