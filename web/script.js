@@ -1,3 +1,7 @@
+const CROSSFADE_DURATION_MS = 5000;
+const CROSSFADE_INTERVAL_MS = 20;
+const AUDIO_DURATION_MS = 60000;
+
 const playBtn = document.getElementById("play-btn");
 const catImg = document.getElementsByClassName("cat")[0];
 const volumeSlider = document.getElementById("volume-slider");
@@ -5,16 +9,14 @@ const currentVolumeLabel = document.getElementById("current-volume-label");
 const clickAudio = document.getElementById("click-audio");
 const clickReleaseAudio = document.getElementById("click-release-audio");
 const meowAudio = document.getElementById("meow-audio");
-
-const CROSSFADE_DURATION_MS = 5000;
-const CROSSFADE_INTERVAL_MS = 20;
-const AUDIO_DURATION_MS = 60000;
+const listenerCountLabel = document.getElementById("listener-count");
 
 let isPlaying = false;
 let isFading = false;
 let currentAudio;
 let maxVolume = 100;
 let currentVolume = 0;
+let ws = connectToWebSocket();
 
 function playAudio() {
 	// add a random query parameter at the end to prevent browser caching
@@ -22,11 +24,17 @@ function playAudio() {
 	currentAudio.onplay = () => {
 		isPlaying = true;
 		playBtn.innerText = "pause";
+		if (ws) {
+			ws.send("playing");
+		}
 	};
 	currentAudio.onpause = () => {
 		isPlaying = false;
 		currentVolume = 0;
 		playBtn.innerText = "play";
+		if (ws) {
+			ws.send("paused");
+		}
 	};
 	currentAudio.onended = () => {
 		currentVolume = 0;
@@ -122,6 +130,31 @@ function enableSpaceBarControl() {
 	});
 }
 
+function connectToWebSocket() {
+	const ws = new WebSocket(`ws://${location.host}/ws`);
+	ws.onmessage = (event) => {
+		console.log(event.data);
+
+		if (typeof event.data !== "string") {
+			return;
+		}
+
+		const listenerCountStr = event.data;
+		const listenerCount = Number.parseInt(listenerCountStr);
+		if (Number.isNaN(listenerCount)) {
+			return;
+		}
+
+		if (listenerCount <= 1) {
+			listenerCountLabel.innerText = `${listenerCount} person tuned in`;
+		} else {
+			listenerCountLabel.innerText = `${listenerCount} ppl tuned in`;
+		}
+	};
+
+	return ws;
+}
+
 playBtn.onmousedown = () => {
 	clickAudio.play();
 	document.addEventListener(
@@ -157,7 +190,15 @@ volumeSlider.oninput = () => {
 	clickReleaseAudio.volume = volumeSlider.value / 100;
 	meowAudio.volume = volumeSlider.value / 100;
 };
-
 volumeSlider.value = 100;
+
+window.addEventListener("offline", () => {
+	ws = null;
+});
+
+window.addEventListener("online", () => {
+	ws = connectToWebSocket();
+});
+
 animateCat();
 enableSpaceBarControl();
