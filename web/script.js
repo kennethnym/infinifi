@@ -133,9 +133,10 @@ playBtn.onmousedown = () => {
 	);
 };
 
-catImg.addEventListener("mouseover", () => {
+// Cat audio sound function
+catImg.onmousedown = () => {
 	meowAudio.play();
-});
+};
 
 playBtn.onclick = () => {
 	if (isPlaying) {
