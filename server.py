@@ -111,6 +111,8 @@ async def ws_endpoint(ws: WebSocket):
         await ws.close()
         ws_connection_manager.disconnect(ws)
 
+    await ws.send_text(f"{len(active_listeners)}")
+
     try:
         while True:
             msg = await ws.receive_text()
