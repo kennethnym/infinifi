@@ -3,6 +3,8 @@ const CROSSFADE_INTERVAL_MS = 20;
 const AUDIO_DURATION_MS = 60000;
 const SAVE_VOLUME_TIMEOUT_MS = 200;
 
+const ACHIEVEMENT_A_LITTLE_CHATTY = "a-little-chatty";
+
 const playBtn = document.getElementById("play-btn");
 const catImg = document.getElementById("cat");
 const heartImg = document.getElementById("heart");
@@ -276,6 +278,10 @@ meowAudio.onplay = () => {
 	if (meowCount === 100) {
 		showNotification("a little chatty", "make milo meow 100 times", 5000);
 		achievementUnlockedAudio.play();
+		localStorage.setItem(
+			"achievements",
+			JSON.stringify([ACHIEVEMENT_A_LITTLE_CHATTY]),
+		);
 	}
 };
 
