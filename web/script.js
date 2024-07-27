@@ -1,6 +1,7 @@
 const CROSSFADE_DURATION_MS = 5000;
 const CROSSFADE_INTERVAL_MS = 20;
 const AUDIO_DURATION_MS = 60000;
+const SAVE_VOLUME_TIMEOUT_MS = 200;
 
 const playBtn = document.getElementById("play-btn");
 const catImg = document.getElementById("cat");
@@ -17,6 +18,7 @@ let isFading = false;
 let currentAudio;
 let maxVolume = 100;
 let currentVolume = 0;
+let saveVolumeTimeout = null;
 let ws = connectToWebSocket();
 
 function playAudio() {
@@ -156,6 +158,37 @@ function connectToWebSocket() {
 	return ws;
 }
 
+function changeVolume(volume) {
+	maxVolume = volume;
+	const v = maxVolume / 100;
+
+	currentVolumeLabel.textContent = `${maxVolume}%`;
+
+	if (!isFading && currentAudio) {
+		currentAudio.volume = v;
+		currentVolume = maxVolume;
+	}
+
+	clickAudio.volume = v;
+	clickReleaseAudio.volume = v;
+	meowAudio.volume = v;
+}
+
+function loadInitialVolume() {
+	const savedVolume = localStorage.getItem("volume");
+	let volume = 100;
+	if (savedVolume) {
+		volume = Number.parseInt(savedVolume);
+		if (Number.isNaN(volume)) {
+			volume = 100;
+		}
+	}
+	volumeSlider.value = volume;
+	changeVolume(volume);
+
+	document.getElementById("volume-slider-container").style.display = "flex";
+}
+
 playBtn.onmousedown = () => {
 	clickAudio.play();
 	document.addEventListener(
@@ -167,7 +200,6 @@ playBtn.onmousedown = () => {
 	);
 };
 
-// Cat audio sound function
 catImg.onmousedown = () => {
 	meowAudio.play();
 };
@@ -181,15 +213,14 @@ playBtn.onclick = () => {
 };
 
 volumeSlider.oninput = () => {
-	maxVolume = volumeSlider.value;
-	currentVolumeLabel.textContent = `${maxVolume}%`;
-	if (!isFading && currentAudio) {
-		currentAudio.volume = maxVolume / 100;
-		currentVolume = maxVolume;
+	const volume = volumeSlider.value;
+	changeVolume(volume);
+	if (saveVolumeTimeout) {
+		clearTimeout(saveVolumeTimeout);
 	}
-	clickAudio.volume = volumeSlider.value / 100;
-	clickReleaseAudio.volume = volumeSlider.value / 100;
-	meowAudio.volume = volumeSlider.value / 100;
+	saveVolumeTimeout = setTimeout(() => {
+		localStorage.setItem("volume", `${volume}`);
+	}, SAVE_VOLUME_TIMEOUT_MS);
 };
 volumeSlider.value = 100;
 
@@ -210,5 +241,6 @@ window.addEventListener("online", () => {
 	ws = connectToWebSocket();
 });
 
+loadInitialVolume();
 animateCat();
 enableSpaceBarControl();

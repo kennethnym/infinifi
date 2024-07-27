@@ -149,13 +149,13 @@ a {
   display: flex;
 }
 
-.volume-slider-container {
-  display: flex;
+#volume-slider-container {
+  display: none;
   justify-content: start;
   align-items: center;
 }
 
-.volume-slider-container > output {
+#volume-slider-container > output {
   color: var(--text);
   margin-right: 1rem;
 }
