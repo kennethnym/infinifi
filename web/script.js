@@ -8,10 +8,17 @@ const catImg = document.getElementById("cat");
 const heartImg = document.getElementById("heart");
 const volumeSlider = document.getElementById("volume-slider");
 const currentVolumeLabel = document.getElementById("current-volume-label");
+const listenerCountLabel = document.getElementById("listener-count");
+const notificationContainer = document.getElementById("notification");
+const notificationTitle = document.getElementById("notification-title");
+const notificationBody = document.getElementById("notification-body");
+
 const clickAudio = document.getElementById("click-audio");
 const clickReleaseAudio = document.getElementById("click-release-audio");
 const meowAudio = document.getElementById("meow-audio");
-const listenerCountLabel = document.getElementById("listener-count");
+const achievementUnlockedAudio = document.getElementById(
+	"achievement-unlocked-audio",
+);
 
 let isPlaying = false;
 let isFading = false;
@@ -19,6 +26,7 @@ let currentAudio;
 let maxVolume = 100;
 let currentVolume = 0;
 let saveVolumeTimeout = null;
+let meowCount = 0;
 let ws = connectToWebSocket();
 
 function playAudio() {
@@ -134,7 +142,9 @@ function enableSpaceBarControl() {
 }
 
 function connectToWebSocket() {
-	const ws = new WebSocket(`ws://${location.host}/ws`);
+	const ws = new WebSocket(
+		`${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}/ws`,
+	);
 	ws.onmessage = (event) => {
 		console.log(event.data);
 
@@ -189,6 +199,34 @@ function loadInitialVolume() {
 	document.getElementById("volume-slider-container").style.display = "flex";
 }
 
+function loadMeowCount() {
+	const lastMeowCount = localStorage.getItem("meowCount");
+	if (!lastMeowCount) {
+		meowCount = 0;
+	} else {
+		const n = Number.parseInt(lastMeowCount);
+		if (Number.isNaN(n)) {
+			meowCount = 0;
+		} else {
+			meowCount += n;
+		}
+	}
+}
+
+function showNotification(title, content, duration) {
+	notificationTitle.innerText = title;
+	notificationBody.innerText = content;
+	notificationContainer.style.display = "block";
+	notificationContainer.style.animation = "0.5s linear 0s notification-fade-in";
+	setTimeout(() => {
+		notificationContainer.style.animation =
+			"0.5s linear 0s notification-fade-out";
+		setTimeout(() => {
+			notificationContainer.style.display = "none";
+		}, 450);
+	}, duration);
+}
+
 playBtn.onmousedown = () => {
 	clickAudio.play();
 	document.addEventListener(
@@ -231,7 +269,18 @@ meowAudio.onplay = () => {
 		heartImg.style.display = "none";
 		heartImg.style.animation = "";
 	}, 900);
+
+	meowCount += 1;
+	localStorage.setItem("meowCount", `${meowCount}`);
+
+	if (meowCount === 100) {
+		showNotification("a little chatty", "make milo meow 100 times", 5000);
+		achievementUnlockedAudio.play();
+	}
 };
+
+// don't wanna jumpscare ppl
+achievementUnlockedAudio.volume = 0.05;
 
 window.addEventListener("offline", () => {
 	ws = null;
@@ -241,6 +290,7 @@ window.addEventListener("online", () => {
 	ws = connectToWebSocket();
 });
 
+loadMeowCount();
 loadInitialVolume();
 animateCat();
 enableSpaceBarControl();

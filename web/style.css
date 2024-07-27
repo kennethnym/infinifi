@@ -1,6 +1,7 @@
 :root {
   font-family: monospace;
   --text: #4c4f69;
+  --surface0: #ccd0da;
   --surface1: #bcc0cc;
   --base: #eff1f5;
   --lavender: #7287fd;
@@ -147,17 +148,6 @@ a {
 .button-container {
   margin-top: 2rem;
   display: flex;
-}
-
-#volume-slider-container {
-  display: none;
-  justify-content: start;
-  align-items: center;
-}
-
-#volume-slider-container > output {
-  color: var(--text);
-  margin-right: 1rem;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
@@ -332,4 +322,56 @@ input[type="range"]::-ms-fill-upper {
   top: -16px;
   right: 50%;
   height: 15px;
+}
+
+#volume-slider-container {
+  display: none;
+  justify-content: start;
+  align-items: center;
+}
+
+#volume-slider-container > output {
+  color: var(--text);
+  margin-right: 1rem;
+}
+
+aside#notification {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--surface0);
+  padding: 1rem 2rem;
+  margin: 2rem;
+  border: 2px solid var(--text);
+}
+
+aside#notification > p {
+  margin: 0;
+}
+
+aside#notification > #notification-title {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+@keyframes notification-fade-in {
+  0% {
+    display: block;
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes notification-fade-out {
+  0% {
+    opactiy: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
