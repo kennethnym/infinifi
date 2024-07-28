@@ -111,7 +111,7 @@ async def ws_endpoint(ws: WebSocket):
         await ws.close()
         ws_connection_manager.disconnect(ws)
 
-    await ws.send_text(f"{len(active_listeners)}")
+    await ws_connection_manager.broadcast(f"{len(active_listeners)}")
 
     try:
         while True:
@@ -121,15 +121,12 @@ async def ws_endpoint(ws: WebSocket):
                 active_listeners.add(addr)
                 await ws_connection_manager.broadcast(f"{len(active_listeners)}")
             elif msg == "paused":
-                active_listeners.remove(addr)
+                active_listeners.discard(addr)
                 await ws_connection_manager.broadcast(f"{len(active_listeners)}")
 
     except WebSocketDisconnect:
-        if ws.client:
-            addr, _ = ws.client
-            active_listeners.discard(addr)
+        active_listeners.discard(addr)
         ws_connection_manager.disconnect(ws)
-
         await ws_connection_manager.broadcast(f"{len(active_listeners)}")
 
 
