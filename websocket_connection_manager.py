@@ -13,7 +13,13 @@ class WebSocketConnectionManager:
     def disconnect(self, ws: WebSocket):
         self.__active_connections.remove(ws)
 
+    async def send_text(self, ws: WebSocket, msg: str):
+        try:
+            await ws.send_text(msg)
+        except:
+            self.__active_connections.remove(ws)
+
     async def broadcast(self, msg: str):
         await asyncio.gather(
-            *[conn.send_text(msg) for conn in self.__active_connections]
+            *[self.send_text(conn, msg) for conn in self.__active_connections]
         )
