@@ -116,7 +116,6 @@ a {
   right: 0;
   z-index: -10;
   display: flex;
-  gap: 16px;
   flex-direction: row;
   justify-content: space-between;
   padding: 2rem;
@@ -127,6 +126,7 @@ a {
 .status-bar > #listener-count {
   margin: 0;
   opacity: 0.8;
+  padding-right: 1rem;
 }
 
 .header {
