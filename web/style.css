@@ -116,6 +116,7 @@ a {
   right: 0;
   z-index: -10;
   display: flex;
+  gap: 16px;
   flex-direction: row;
   justify-content: space-between;
   padding: 2rem;
