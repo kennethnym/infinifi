@@ -126,6 +126,7 @@ a {
 .status-bar > #listener-count {
   margin: 0;
   opacity: 0.8;
+  padding-right: 1rem;
 }
 
 .header {
