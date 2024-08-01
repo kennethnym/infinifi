@@ -31,6 +31,7 @@ body {
 
 body {
   width: calc(100% - 4rem - 2px);
+  height: calc(100svh - 6rem - 2px);
   height: calc(100vh - 6rem - 2px);
   padding: 2rem;
   margin: 0;
