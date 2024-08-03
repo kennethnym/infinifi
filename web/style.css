@@ -42,7 +42,7 @@ body {
   body {
     width: calc(100% - 8rem - 2px);
     height: calc(100vh - 10rem - 2px);
-    height: calc(100svh - 6rem - 2px);
+    height: calc(100svh - 10rem - 2px);
     padding: 4rem;
   }
 }
