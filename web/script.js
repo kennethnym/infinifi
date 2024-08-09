@@ -285,7 +285,7 @@ meowAudio.onplay = () => {
 	}
 };
 
-// don't wanna jumpscare ppl
+// don't wanna jumpscare ppl meow
 achievementUnlockedAudio.volume = 0.05;
 
 window.addEventListener("offline", () => {

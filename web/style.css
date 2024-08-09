@@ -36,6 +36,7 @@ body {
   padding: 2rem;
   margin: 0;
   background-color: var(--base);
+  transition: 0.2s background-color ease;
   overflow: hidden;
 }
 @media (min-width: 768px) {
@@ -396,4 +397,48 @@ aside#notification > #notification-title {
   100% {
     opacity: 0;
   }
+}
+
+.theme-modal {
+  display: none;
+  width: 60vw;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--base);
+  top: 50%;
+  gap: 5px;
+  flex-direction: column;
+  position: fixed;
+  border: 2px solid var(--text);
+}
+
+.theme-modal.active{
+  display: flex;
+}
+
+.theme-modal:hover .theme-item {
+  opacity: 0.5;
+}
+
+.theme-item {
+  color: var(--text);
+  font-size: 16px;
+  padding: 10px 20px;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.theme-modal .theme-item:hover{
+  opacity: 1;
+  background-color: white;
+  color: black;
+}
+
+.theme-colors{
+  display: flex;
+  padding: 5px;
+  display: flex;
+  gap: 2px;
+  border-radius: 20px;
 }
