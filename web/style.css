@@ -217,8 +217,8 @@ input[type="range"]::-ms-fill-upper {
   text-align: center;
 }
 
+
 .button:hover {
-  background-color: var(--surface1);
   background-size: 10px 10px;
   background-image: repeating-linear-gradient(
     45deg,
@@ -231,17 +231,36 @@ input[type="range"]::-ms-fill-upper {
 
 @media (prefers-color-scheme: dark) {
   .button:hover {
-    background-color: #1e1e2e;
     opacity: 1;
     background-size: 10px 10px;
     background-image: repeating-linear-gradient(
       45deg,
-      #585b70 0,
-      #585b70 1px,
-      #1e1e2e 0,
-      #1e1e2e 50%
+      var(--surface1) 0,
+      var(--surface1) 1px,
+      var(--base) 0,
+      var(--base) 50%
     );
   }
+}
+
+.theme-btn {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-family: monospace;
+  color: var(--text);
+  background-color: transparent;
+  margin-left: 20px ;
+  border: none;
+  opacity: 0.6;
+}
+
+.theme-btn:hover {
+  opacity: 1;
+}
+
+.theme-icon path {
+  fill: var(--text);
 }
 
 .button.button-active,
