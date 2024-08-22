@@ -25,7 +25,7 @@ async def lifespan(app: FastAPI):
 
     inference_url = os.environ.get("INFERENCE_SERVER_URL")
     if not inference_url:
-        inference_url = "ws://localhost:8001"
+        inference_url = "http://localhost:8001"
 
     advance()
 
