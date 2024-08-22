@@ -3,7 +3,6 @@ import os
 from time import sleep
 import requests
 
-import websocket
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, status
 from fastapi.responses import FileResponse
@@ -15,8 +14,6 @@ from websocket_connection_manager import WebSocketConnectionManager
 current_index = -1
 # the timer that periodically advances the current audio track
 t = None
-# websocket connection to the inference server
-ws = None
 inference_url = ""
 ws_connection_manager = WebSocketConnectionManager()
 active_listeners = set()
@@ -34,8 +31,6 @@ async def lifespan(app: FastAPI):
 
     yield
 
-    if ws:
-        ws.close()
     if t:
         t.cancel()
 
