@@ -36,6 +36,7 @@ body {
   padding: 2rem;
   margin: 0;
   background-color: var(--base);
+  transition: 0.2s background-color ease;
   overflow: hidden;
 }
 @media (min-width: 768px) {
@@ -217,8 +218,8 @@ input[type="range"]::-ms-fill-upper {
   text-align: center;
 }
 
+
 .button:hover {
-  background-color: var(--surface1);
   background-size: 10px 10px;
   background-image: repeating-linear-gradient(
     45deg,
@@ -231,17 +232,36 @@ input[type="range"]::-ms-fill-upper {
 
 @media (prefers-color-scheme: dark) {
   .button:hover {
-    background-color: #1e1e2e;
     opacity: 1;
     background-size: 10px 10px;
     background-image: repeating-linear-gradient(
       45deg,
-      #585b70 0,
-      #585b70 1px,
-      #1e1e2e 0,
-      #1e1e2e 50%
+      var(--surface1) 0,
+      var(--surface1) 1px,
+      var(--base) 0,
+      var(--base) 50%
     );
   }
+}
+
+.theme-btn {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-family: monospace;
+  color: var(--text);
+  background-color: transparent;
+  margin-left: 20px ;
+  border: none;
+  opacity: 0.6;
+}
+
+.theme-btn:hover {
+  opacity: 1;
+}
+
+.theme-icon path {
+  fill: var(--text);
 }
 
 .button.button-active,
@@ -377,4 +397,48 @@ aside#notification > #notification-title {
   100% {
     opacity: 0;
   }
+}
+
+.theme-modal {
+  display: none;
+  width: 60vw;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--base);
+  top: 50%;
+  gap: 5px;
+  flex-direction: column;
+  position: fixed;
+  border: 2px solid var(--text);
+}
+
+.theme-modal.active{
+  display: flex;
+}
+
+.theme-modal:hover .theme-item {
+  opacity: 0.5;
+}
+
+.theme-item {
+  color: var(--text);
+  font-size: 16px;
+  padding: 10px 20px;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.theme-modal .theme-item:hover{
+  opacity: 1;
+  background-color: white;
+  color: black;
+}
+
+.theme-colors{
+  display: flex;
+  padding: 5px;
+  display: flex;
+  gap: 2px;
+  border-radius: 20px;
 }
