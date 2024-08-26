@@ -15,15 +15,18 @@ current_index = -1
 # the timer that periodically advances the current audio track
 t = None
 inference_url = ""
+api_key = ""
 ws_connection_manager = WebSocketConnectionManager()
 active_listeners = set()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global ws, inference_url
+    global ws, inference_url, api_key
 
     inference_url = os.environ.get("INFERENCE_SERVER_URL")
+    api_key = os.environ.get("API_KEY")
+
     if not inference_url:
         inference_url = "http://localhost:8001"
 
@@ -52,8 +55,10 @@ def generate_new_audio():
     log_info("requesting new audio...")
 
     try:
-        print(f"{inference_url}/generate")
-        requests.post(f"{inference_url}/generate")
+        requests.post(
+            f"{inference_url}/generate",
+            headers={"Authorization": f"key {api_key}"},
+        )
     except:
         log_warn(
             "inference server potentially unreachable. recycling cached audio for now."
@@ -63,7 +68,11 @@ def generate_new_audio():
     is_available = False
     while not is_available:
         try:
-            res = requests.post(f"{inference_url}/clips/0", stream=True)
+            res = requests.post(
+                f"{inference_url}/clips/0",
+                stream=True,
+                headers={"Authorization": f"key {api_key}"},
+            )
         except:
             log_warn(
                 "inference server potentially unreachable. recycling cached audio for now."
@@ -71,6 +80,7 @@ def generate_new_audio():
             return
 
         if res.status_code != status.HTTP_200_OK:
+            print(res.status_code)
             print("still generating...")
             sleep(5)
             continue
@@ -83,7 +93,11 @@ def generate_new_audio():
                 f.write(chunk)
 
     for i in range(4):
-        res = requests.post(f"{inference_url}/clips/{i + 1}", stream=True)
+        res = requests.post(
+            f"{inference_url}/clips/{i + 1}",
+            stream=True,
+            headers={"Authorization": f"key {api_key}"},
+        )
 
         if res.status_code != status.HTTP_200_OK:
             continue
