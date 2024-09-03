@@ -82,7 +82,7 @@ def generate_new_audio():
         if res.status_code != status.HTTP_200_OK:
             print(res.status_code)
             print("still generating...")
-            sleep(5)
+            sleep(30)
             continue
 
         print("inference complete! downloading new clips")
