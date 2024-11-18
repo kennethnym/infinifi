@@ -31,7 +31,11 @@
 				</div>
 
 				<div class="status-bar">
-					<p id="listener-count">0 person tuned in</p>
+					<div id="listener-stats-container">
+						<p id="timer-display-label">joined HH:MM</p>
+						<p class="status-bar-listener-separator">&middot;</p>
+						<p id="listener-count">0 person tuned in</p>
+					</div>					
 					<div id="volume-slider-container">
 						<output id="current-volume-label" for="volume-slider">100%</output>
 						<input id="volume-slider" type="range" min="0" max="100" step="1" />
@@ -51,7 +55,7 @@
 		</div>
 
 		<footer>
-			made by&nbsp<a href="https://kennethnym.com">kennethnym</a>&nbsp;&lt;3 · powered by
+			made by&nbsp<a href="https://kennethnym.com">kennethnym</a>&nbsp;&lt;3 &middot; powered by
 			<a class="fal-link" href="https://fal.ai">
 				<picture>
 					<source srcset="./images/fal-logo-light.svg" media="(prefers-color-scheme: light)" />
@@ -59,7 +63,7 @@
 					<img class="fal-logo" fill="none" src="./images/fal-logo-dark.svg">
 				</picture>
 			</a>
-      ·
+      &middot;
 			<a target="_blank" rel="noopener noreferrer" href="https://github.com/kennethnym/infinifi">github</a>
 		</footer>
 

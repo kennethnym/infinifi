@@ -11,6 +11,7 @@ const heartImg = document.getElementById("heart");
 const volumeSlider = document.getElementById("volume-slider");
 const currentVolumeLabel = document.getElementById("current-volume-label");
 const listenerCountLabel = document.getElementById("listener-count");
+const timerDisplayLabel = document.getElementById("timer-display-label");
 const notificationContainer = document.getElementById("notification");
 const notificationTitle = document.getElementById("notification-title");
 const notificationBody = document.getElementById("notification-body");
@@ -30,6 +31,8 @@ let currentVolume = 0;
 let saveVolumeTimeout = null;
 let meowCount = 0;
 let ws = connectToWebSocket();
+
+const joinedTime = new Date();
 
 function playAudio() {
 	// add a random query parameter at the end to prevent browser caching
@@ -229,6 +232,33 @@ function showNotification(title, content, duration) {
 	}, duration);
 }
 
+function dateToHumanTime(dateVal, includeSeconds = false) {
+	// Extract hours, minutes
+	let hours = dateVal.getHours();
+	let minutes = dateVal.getMinutes();
+	let seconds = dateVal.getSeconds();
+
+	// Add leading zeros if the values are less than 10
+	hours = hours < 10 ? '0' + hours : hours;
+	minutes = minutes < 10 ? '0' + minutes : minutes;
+	seconds = seconds < 10 ? '0' + seconds : seconds;
+
+	// Combine into HH:MM format
+	if (includeSeconds) {
+		return `${hours}:${minutes}:${seconds}`;
+	}
+	return `${hours}:${minutes}`;
+}
+
+function loadTimerDisplay() {
+	const now = new Date();
+	timerDisplayLabel.innerText = `${dateToHumanTime(now)} | joined ${dateToHumanTime(joinedTime)}`;
+
+	// seconds until next full minutes 
+	// + 1 seconds to ensure non null value
+	setTimeout(loadTimerDisplay, (61 - now.getSeconds()) * 1000);
+}
+
 playBtn.onmousedown = () => {
 	clickAudio.play();
 	document.addEventListener(
@@ -300,3 +330,4 @@ loadMeowCount();
 loadInitialVolume();
 animateCat();
 enableSpaceBarControl();
+loadTimerDisplay();
