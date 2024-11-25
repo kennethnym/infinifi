@@ -29,7 +29,6 @@ let maxVolume = 100;
 let currentVolume = 0;
 let saveVolumeTimeout = null;
 let meowCount = 0;
-let ws = connectToWebSocket();
 
 function playAudio() {
 	// add a random query parameter at the end to prevent browser caching
@@ -37,17 +36,13 @@ function playAudio() {
 	currentAudio.onplay = () => {
 		isPlaying = true;
 		playBtn.innerText = "pause";
-		if (ws) {
-			ws.send("playing");
-		}
+		updateClientStatus({ isListening: true });
 	};
 	currentAudio.onpause = () => {
 		isPlaying = false;
 		currentVolume = 0;
 		playBtn.innerText = "play";
-		if (ws) {
-			ws.send("paused");
-		}
+		updateClientStatus({ isListening: false });
 	};
 	currentAudio.onended = () => {
 		currentVolume = 0;
@@ -107,18 +102,6 @@ function fadeOut() {
 	}, CROSSFADE_INTERVAL_MS);
 }
 
-function animateCat() {
-	let current = 0;
-	setInterval(() => {
-		if (current === 3) {
-			current = 0;
-		} else {
-			current += 1;
-		}
-		catImg.src = `./images/cat-${current}.png`;
-	}, 500);
-}
-
 /**
  * Allow audio to be played/paused using the space bar
  */
@@ -141,33 +124,6 @@ function enableSpaceBarControl() {
 			playBtn.click();
 		}
 	});
-}
-
-function connectToWebSocket() {
-	const ws = new WebSocket(
-		`${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}/ws`,
-	);
-	ws.onmessage = (event) => {
-		console.log(event.data);
-
-		if (typeof event.data !== "string") {
-			return;
-		}
-
-		const listenerCountStr = event.data;
-		const listenerCount = Number.parseInt(listenerCountStr);
-		if (Number.isNaN(listenerCount)) {
-			return;
-		}
-
-		if (listenerCount <= 1) {
-			listenerCountLabel.innerText = `${listenerCount} person tuned in`;
-		} else {
-			listenerCountLabel.innerText = `${listenerCount} ppl tuned in`;
-		}
-	};
-
-	return ws;
 }
 
 function changeVolume(volume) {
@@ -229,6 +185,37 @@ function showNotification(title, content, duration) {
 	}, duration);
 }
 
+function listenToServerStatusEvent() {
+	const statusEvent = new EventSource("/status");
+	statusEvent.addEventListener("message", (event) => {
+		const data = JSON.parse(event.data);
+		updateListenerCountLabel(data.listeners);
+	});
+}
+
+function updateListenerCountLabel(newCount) {
+	if (newCount <= 1) {
+		listenerCountLabel.innerText = `${newCount} person tuned in`;
+	} else {
+		listenerCountLabel.innerText = `${newCount} ppl tuned in`;
+	}
+}
+
+async function updateClientStatus(status) {
+	await fetch("/client-status", {
+		method: "POST",
+		body: JSON.stringify({ isListening: status.isListening }),
+		headers: {
+			"Content-Type": "application/json",
+		},
+		keepalive: true,
+	});
+}
+
+window.addEventListener("beforeunload", (e) => {
+	updateClientStatus({ isListening: false });
+});
+
 playBtn.onmousedown = () => {
 	clickAudio.play();
 	document.addEventListener(
@@ -288,15 +275,7 @@ meowAudio.onplay = () => {
 // don't wanna jumpscare ppl
 achievementUnlockedAudio.volume = 0.05;
 
-window.addEventListener("offline", () => {
-	ws = null;
-});
-
-window.addEventListener("online", () => {
-	ws = connectToWebSocket();
-});
-
 loadMeowCount();
 loadInitialVolume();
-animateCat();
 enableSpaceBarControl();
+listenToServerStatusEvent();

@@ -1,14 +1,22 @@
+import asyncio
 import threading
 import os
+import json
 from time import sleep
 import requests
 
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, status
+from fastapi import (
+    FastAPI,
+    Request,
+    HTTPException,
+    status,
+)
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from logger import log_info, log_warn
 from websocket_connection_manager import WebSocketConnectionManager
+from sse_starlette.sse import EventSourceResponse
 
 # the index of the current audio track from 0 to 9
 current_index = -1
@@ -130,34 +138,46 @@ def get_current_audio():
     return FileResponse(f"{current_index}.mp3")
 
 
-@app.websocket("/ws")
-async def ws_endpoint(ws: WebSocket):
-    await ws_connection_manager.connect(ws)
+@app.get("/status")
+def status_stream(request: Request):
+    async def status_generator():
+        last_listener_count = len(active_listeners)
+        yield json.dumps({"listeners": last_listener_count})
 
-    addr = ""
-    if ws.client:
-        addr, _ = ws.client
-    else:
-        await ws.close()
-        ws_connection_manager.disconnect(ws)
+        while True:
+            if await request.is_disconnected():
+                break
 
-    await ws_connection_manager.broadcast(f"{len(active_listeners)}")
+            listener_count = len(active_listeners)
+            if listener_count != last_listener_count:
+                last_listener_count = listener_count
+                yield json.dumps({"listeners": listener_count})
+
+            await asyncio.sleep(1)
+
+    return EventSourceResponse(status_generator())
+
+
+@app.post("/client-status")
+async def change_status(request: Request):
+    body = await request.json()
 
     try:
-        while True:
-            msg = await ws.receive_text()
+        is_listening = body["isListening"]
 
-            if msg == "playing":
-                active_listeners.add(addr)
-                await ws_connection_manager.broadcast(f"{len(active_listeners)}")
-            elif msg == "paused":
-                active_listeners.discard(addr)
-                await ws_connection_manager.broadcast(f"{len(active_listeners)}")
+        client = request.client
+        if not client:
+            raise HTTPException(status_code=400, detail="ip address unavailable.")
 
-    except WebSocketDisconnect:
-        active_listeners.discard(addr)
-        ws_connection_manager.disconnect(ws)
-        await ws_connection_manager.broadcast(f"{len(active_listeners)}")
+        if is_listening:
+            active_listeners.add(client.host)
+        else:
+            active_listeners.discard(client.host)
+
+        return {"isListening": is_listening}
+
+    except KeyError:
+        raise HTTPException(status_code=400, detail="'isListening' must be a boolean")
 
 
 app.mount("/", StaticFiles(directory="web", html=True), name="web")
