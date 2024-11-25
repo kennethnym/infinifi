@@ -106,22 +106,25 @@ function fadeOut() {
  * Allow audio to be played/paused using the space bar
  */
 function enableSpaceBarControl() {
+	let isDown = false;
 	document.addEventListener("keydown", (event) => {
+		if (isDown) return;
 		if (event.code === "Space") {
+			isDown = true;
 			playBtn.classList.add("button-active");
-			playBtn.dispatchEvent(new MouseEvent("mousedown"));
 			clickAudio.play();
 		}
 	});
 	document.addEventListener("keyup", (event) => {
+		isDown = false;
 		if (event.code === "Space") {
 			playBtn.classList.remove("button-active");
 			clickReleaseAudio.play();
-		}
-	});
-	document.addEventListener("keypress", (event) => {
-		if (event.code === "Space") {
-			playBtn.click();
+			if (isPlaying) {
+				pauseAudio();
+			} else {
+				playAudio();
+			}
 		}
 	});
 }
