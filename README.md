@@ -16,6 +16,10 @@ infinifi consists of two parts, the inference server and the web server. 5 audio
 
 when the inference server is down, the web server will recycle saved clips until it is back up again.
 
+## requirements
+
+- python >= 3.10 (tested with python 3.12 only)
+
 ## running it yourself
 
 i have recently changed the networking between the web server and the inference server. at the moment, the inference happens on fal infrastructure (`fal_app.py`), and i have yet to update the standalone inference server code `inference_server.py` to match the new architecture.
