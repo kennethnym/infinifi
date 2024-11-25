@@ -1,4 +1,4 @@
 fastapi==0.115.5
+websockets==14.1
 logger==1.4
 Requests==2.32.3
-sse_starlette==2.1.3

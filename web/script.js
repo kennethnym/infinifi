@@ -22,6 +22,8 @@ const achievementUnlockedAudio = document.getElementById(
 	"achievement-unlocked-audio",
 );
 
+const ws = initializeWebSocket();
+
 let isPlaying = false;
 let isFading = false;
 let currentAudio;
@@ -188,14 +190,6 @@ function showNotification(title, content, duration) {
 	}, duration);
 }
 
-function listenToServerStatusEvent() {
-	const statusEvent = new EventSource("/status");
-	statusEvent.addEventListener("message", (event) => {
-		const data = JSON.parse(event.data);
-		updateListenerCountLabel(data.listeners);
-	});
-}
-
 function updateListenerCountLabel(newCount) {
 	if (newCount <= 1) {
 		listenerCountLabel.innerText = `${newCount} person tuned in`;
@@ -205,14 +199,32 @@ function updateListenerCountLabel(newCount) {
 }
 
 async function updateClientStatus(status) {
-	await fetch("/client-status", {
-		method: "POST",
-		body: JSON.stringify({ isListening: status.isListening }),
-		headers: {
-			"Content-Type": "application/json",
-		},
-		keepalive: true,
-	});
+	if (status.isListening) {
+		ws.send("listening");
+	} else {
+		ws.send("paused");
+	}
+}
+
+function initializeWebSocket() {
+	const ws = new WebSocket(
+		`${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}/ws`,
+	);
+
+	ws.onmessage = (event) => {
+		if (typeof event.data !== "string") {
+			return;
+		}
+
+		const listenerCount = Number.parseInt(event.data);
+		if (Number.isNaN(listenerCount)) {
+			return;
+		}
+
+		updateListenerCountLabel(listenerCount);
+	};
+
+	return ws;
 }
 
 window.addEventListener("beforeunload", (e) => {
@@ -281,4 +293,3 @@ achievementUnlockedAudio.volume = 0.05;
 loadMeowCount();
 loadInitialVolume();
 enableSpaceBarControl();
-listenToServerStatusEvent();
