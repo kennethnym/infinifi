@@ -12,27 +12,13 @@ the frontend is written using pure HTML/CSS/JS with no external dependencies. it
 
 ## inference
 
-infinifi consists of two parts, the inference server and the web server. the two servers are connected via a websocket connection. whenever the web server requires new audio clips to be generated, it sends a "generate" message to the inference server, which triggers the generation on the inference server. when the generation is done, the inference server sends back the audio in mp3 format back to the web server over websocket. once the web server receives the mp3 data, it saves them locally as mp3 files.
+infinifi consists of two parts, the inference server and the web server. 5 audio clips are generated each time an inference request is received from the web server. the web server will request for an inference every set interval. after the request is made, it polls the inference server until the audio is generated and available for download. it then downloads the 5 generated clips and saves it locally. at most 10 clips are saved at a time.
+
+when the inference server is down, the web server will recycle saved clips until it is back up again.
 
 ## running it yourself
 
-you are welcome to self host infinifi. to get started, make sure that: 
-
-- you are using python 3.9/3.10;
-- port 8001 (used by the inference server) is free.
-
-then follow the steps below:
-
-1. install `torch==2.1.0`
-2. install deps from both `requirements-inference.txt` and `requirements-server.txt`
-3. run the inference server: `python inference_server.py`
-4. run the web server: `fastapi run server.py --port ${ANY_PORT_NUMBER}`
-
-you can also run the inference server and the web server on separate machines. to let the web server know where to connect to the inference server, specify the `INFERENCE_SERVER_WS_URL` environment variable when running the web server:
-
-```
-INFERENCE_SERVER_WS_URL=ws://2.3.1.4:1938 fastapi run server.py --port ${ANY_PORT_NUMBER}
-```
+i have recently changed the networking between the web server and the inference server. at the moment, the inference happens on fal infrastructure (`fal_app.py`), and i have yet to update the standalone inference server code `inference_server.py` to match the new architecture.
 
 ## feature requests
 
